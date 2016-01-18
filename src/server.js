@@ -4,14 +4,26 @@ const PORT = process.env.PORT || 3000;
 
 var assert = require('assert'),
     express = require('express'),
+    useragent = require('express-useragent'),
+    accepts = require('accepts'),
 
     app = express()
+    .use(useragent.express())
+    .set('json spaces', 4)
      .get('/', function(req, res) {
-         res.send('It Works JW!');
+         res.send('<a href="/api/whoami">/api/whoami</a>');
      })
-     // .get('/:value', function(req, res) {
-     //     res.json(ts.response(ts.parseValue(req.params.value)));
-     // })
+     .get('/api/whoami', function(req, res) {
+         let os = req.useragent.os,
+             locale = accepts(req).languages().shift();
+
+         res.json({
+             ipaddress: req.ip,
+             language: locale,
+             software: os
+         });
+
+     })
      .use(function(req, res) {
          res.sendStatus(404);
      }),
