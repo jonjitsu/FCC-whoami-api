@@ -4,9 +4,9 @@
   "description": "Whoami as a microservice",
   "main": "index.js",
   "scripts": {
-    "start": "npm build/server.js",
+    "start": "node build/server.js",
     "test": "mocha --compilers js:babel-register",
-    "build": "mkdir -p build && babel src/*.js -o build/server.js && cp -R src/views build",
+    "build": "mkdir -p build && babel src --out-dir build",
     "dev": "babel-node src/server.js"
   },
   "keywords": [
