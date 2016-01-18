@@ -20,10 +20,16 @@ var assert = require('assert'),
     })
      .get('/api/whoami', function(req, res) {
          let os = req.useragent.os,
-             locale = accepts(req).languages().shift();
+             locale = accepts(req).languages().shift(),
+             realIp = function(req) {
+                 if( req.headers['x-forwarded-for'] ) {
+                     return req.headers['x-forwarded-for'];
+                 }
+                 return req.ip;
+             };
 
          res.json({
-             ipaddress: req.ip,
+             ipaddress: realIp(req),
              language: locale,
              software: os
          });
