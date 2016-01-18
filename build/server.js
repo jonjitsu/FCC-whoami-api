@@ -8,6 +8,10 @@ var assert = require('assert'),
     accepts = require('accepts'),
     app = express().use(useragent.express()).set('json spaces', 4).get('/', function (req, res) {
     res.send('<a href="/api/whoami">/api/whoami</a>');
+}).get('/api/heroku', function (req, res) {
+    res.json({
+        headers: req.headers
+    });
 }).get('/api/whoami', function (req, res) {
     let os = req.useragent.os,
         locale = accepts(req).languages().shift();
