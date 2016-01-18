@@ -6,15 +6,22 @@ var assert = require('assert'),
     express = require('express'),
     useragent = require('express-useragent'),
     accepts = require('accepts'),
+    jsonBeautifier = function(req, res, next) {
+        console.log(req.query.pretty);
+        if(req.query.pretty!==undefined) req.app.set('json spaces', 4);
+        next();
+    },
 
     app = express()
     .use(useragent.express())
-    .set('json spaces', 4)
+    .use(jsonBeautifier)
      .get('/', function(req, res) {
          res.send('<a href="/api/whoami">/api/whoami</a>');
      })
     .get('/api/heroku', function(req, res) {
         res.json({
+            params: req.params,
+            query: req.query,
             headers: req.headers
         });
     })
